@@ -37,8 +37,8 @@ class AppKernel extends Kernel
     {
         $bundles = array(
             // ...
-
-            new new Htc\NowTaxiBundle\HtcNowTaxiBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Htc\NowTaxiBundle\HtcNowTaxiBundle(),
         );
 
         // ...
