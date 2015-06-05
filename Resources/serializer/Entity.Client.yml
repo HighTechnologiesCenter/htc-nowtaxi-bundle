@@ -1,0 +1,11 @@
+Htc\NowTaxiBundle\Entity\Client:
+    exclusion_policy: all
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+      comment:
+        type: string
+      data:
+        type: string

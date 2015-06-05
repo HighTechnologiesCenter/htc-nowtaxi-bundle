@@ -1,0 +1,31 @@
+Htc\NowTaxiBundle\Entity\Requirements:
+    exclusion_policy: all
+    properties:
+      hasConditioner:
+        serialized_name: "has_conditioner"
+        type: integer
+      noSmoking:
+        serialized_name: "no_smoking"
+        type: integer
+      childChair:
+        serialized_name: "child_chair"
+        type: integer
+      animalTransport:
+        serialized_name: "animal_transport"
+        type: integer
+      universal:
+        type: integer
+      wifi:
+        type: integer
+      check:
+        type: integer
+      card:
+        type: integer
+      noncash:
+        type: integer
+      specialNumber:
+        serialized_name: "special_number"
+        type: integer
+      noBrand:
+        serialized_name: "no_brand"
+        type: integer

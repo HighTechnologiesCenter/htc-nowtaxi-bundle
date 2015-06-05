@@ -1,0 +1,7 @@
+Htc\NowTaxiBundle\Entity\Fee:
+    exclusion_policy: all
+    properties:
+      fix:
+        type: integer
+      relative:
+        type: integer

@@ -1,0 +1,13 @@
+Htc\NowTaxiBundle\Entity\Place:
+    exclusion_policy: all
+    properties:
+      address:
+        type: string
+      porch:
+        type: integer
+      lon:
+        type: double
+      lat:
+        type: double
+      time:
+        type: DateTime<'Y-m-d H:i:s O'>

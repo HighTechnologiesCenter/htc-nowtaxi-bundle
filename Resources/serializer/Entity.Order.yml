@@ -1,0 +1,37 @@
+Htc\NowTaxiBundle\Entity\Order:
+    exclusion_policy: all
+    properties:
+      id:
+        type: string
+      from:
+        type: Htc\NowTaxiBundle\Entity\Place
+      to:
+        type: Htc\NowTaxiBundle\Entity\Place
+      client:
+        type: Htc\NowTaxiBundle\Entity\Client
+      bookingTime:
+        type: DateTime<'Y-m-d H:i:s O'>
+      status:
+        type: string
+      orderProperties:
+        type: Htc\NowTaxiBundle\Entity\OrderProperties
+        serialized_name: "messenger"
+      requirements:
+        serialized_name: "requirement"
+        type: Htc\NowTaxiBundle\Entity\Requirements
+      fee:
+        type: Htc\NowTaxiBundle\Entity\Fee
+      data:
+        type: string
+      payment:
+        type: integer
+      comment:
+        type: string
+      driver:
+        type: Htc\NowTaxiBundle\Entity\Driver
+      service:
+        type: Htc\NowTaxiBundle\Entity\Service
+      message:
+        type: string
+      tags:
+        type: array

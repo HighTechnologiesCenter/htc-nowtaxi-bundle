@@ -1,0 +1,9 @@
+htc_now_taxi.change_order_status:
+    pattern:  /nowtaxi/order
+    defaults: { _controller: HtcNowTaxiBundle:OrderModification:changeOrderStatus }
+    methods:  [ POST ]
+
+htc_now_taxi.change_drivers_position:
+    pattern: /nowtaxi/driver/position
+    defaults: { _controller: HtcNowTaxiBundle:OrderModification:changeDriversPosition }
+    methods:  [ POST ]

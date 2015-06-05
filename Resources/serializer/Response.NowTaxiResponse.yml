@@ -1,0 +1,11 @@
+Htc\NowTaxiBundle\Response\NowTaxiResponse:
+    exclusion_policy: all
+    properties:
+      status:
+        type: string
+      message:
+        type: string
+      order:
+        type: Htc\NowTaxiBundle\Entity\Order
+      code:
+        type: string

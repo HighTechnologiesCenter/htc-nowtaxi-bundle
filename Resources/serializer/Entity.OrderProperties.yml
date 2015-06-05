@@ -1,0 +1,35 @@
+Htc\NowTaxiBundle\Entity\OrderProperties:
+    exclusion_policy: all
+    properties:
+      tariff:
+        type: integer
+      category:
+        type: array
+      comment:
+        type: string
+      minprice:
+        type: integer
+      inctime:
+        type: integer
+      incdist:
+        type: integer
+      timecost:
+        type: integer
+      distcost:
+        type: integer
+      transfer:
+        type: integer
+      algorithm:
+        type: string
+      distcostUnit:
+        type: integer
+      timecostUnit:
+        type: integer
+      speed:
+        type: integer
+      speedTimeMarkup:
+        type: integer
+      timeFree:
+        type: integer
+      timeCostWait:
+        type: integer

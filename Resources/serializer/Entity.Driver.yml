@@ -1,0 +1,15 @@
+Htc\NowTaxiBundle\Entity\Driver:
+    exclusion_policy: all
+    properties:
+      name:
+        type: string
+      car:
+        type: string
+      number:
+        type: string
+      phone:
+        type: string
+      service:
+        type: Htc\NowTaxiBundle\Entity\Service
+      point:
+        type: Htc\NowTaxiBundle\Entity\Place

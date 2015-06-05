@@ -1,0 +1,23 @@
+{
+  "name": "htc/now-taxi-bundle",
+  "description": "This bundle provides integration with nowtaxi.ru order exchange API (http://doc.nowtaxi.ru/api/exchange) in a Symfony 2 application.",
+  "keywords": ["nowtaxi api", "taxi", "order exchange", "nowtaxi", "api"],
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name":     "Roman Matveev",
+      "email":    "lion.aztec@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "symfony/symfony": ">=2.3,<3.0-dev",
+    "nategood/httpful": "0.2.*",
+    "jms/serializer-bundle": "0.13.*"
+  },
+  "autoload": {
+    "psr-0": { "Htc\\NowTaxiBundle": "" }
+  },
+  "target-dir": "Htc/HtcNowTaxiBundle"
+}
