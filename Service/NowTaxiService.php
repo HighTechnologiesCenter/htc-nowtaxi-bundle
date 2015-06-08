@@ -142,7 +142,12 @@ class NowTaxiService
      */
     public function putOrder($orderData, $eventData = null)
     {
-        $order = $this->converter->convert($orderData);
+        if (!$orderData instanceof Order) {
+            $order = $this->converter->convert($orderData);
+        } else {
+            $order = $orderData;
+        }
+
         $orderJson = $this->serializer->serialize($order, 'json');
 
         $url = $this->buildUrl('/order/put');
