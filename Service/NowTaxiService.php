@@ -154,7 +154,7 @@ class NowTaxiService
 
         $response = $this->serializer->deserialize(
             $httpfulResponse->__toString(),
-            NowTaxiResponse::class,
+            'Htc\NowTaxiBundle\Response\NowTaxiResponse',
             'json'
         );
 
@@ -240,7 +240,7 @@ class NowTaxiService
 
         $response = $this->serializer->deserialize(
             $httpfulResponse->__toString(),
-            NowTaxiResponse::class,
+            'Htc\NowTaxiBundle\Response\NowTaxiResponse',
             'json'
         );
 

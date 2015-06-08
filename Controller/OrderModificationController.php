@@ -35,7 +35,7 @@ class OrderModificationController extends Controller
         /** @var SerializerInterface $serializer */
         $serializer = $this->get('jms_serializer');
         /** @var Order $order */
-        $order = $serializer->deserialize($request->getContent(), Order::class, 'json');
+        $order = $serializer->deserialize($request->getContent(), 'Htc\NowTaxiBundle\Entity\Order', 'json');
 
         $this->getEventDispatcherService()->dispatch(Events::ORDER_CHANGED, new OrderEvent($order));
 
