@@ -8,7 +8,6 @@
 
 namespace Htc\NowTaxiBundle\Service;
 
-use Acme\BdhundlerBundle\Entity\Ordertaxi;
 use Htc\NowTaxiBundle\Converter\OrderConverterInterface;
 use Htc\NowTaxiBundle\Entity\Order;
 use Htc\NowTaxiBundle\Event\Events;
@@ -132,7 +131,7 @@ class NowTaxiService
      * Создает заказ
      * @link http://doc.nowtaxi.ru/api/exchange#apiapikeyorderput
      *
-     * @param mixed|Ordertaxi $orderData
+     * @param mixed $orderData
      * @param mixed $eventData
      *
      * @return Order
