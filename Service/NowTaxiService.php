@@ -153,7 +153,7 @@ class NowTaxiService
         $url = $this->buildUrl('/order/put');
 
         $request = $this->createPostJsonRequest($url, $orderJson);
-        $this->debug('NowTaxi order creation', ['json' => $orderJson]);
+        $this->debug('NowTaxi order creation', array('json' => $orderJson));
         $httpfulResponse = $this->sendRequest($request);
         $this->checkForErrors($httpfulResponse);
 
@@ -434,7 +434,7 @@ class NowTaxiService
      * @param       $message
      * @param array $context
      */
-    private function debug($message, array $context = [])
+    private function debug($message, array $context = array())
     {
         if (null !== $this->logger) {
             $this->logger->debug($message, $context);

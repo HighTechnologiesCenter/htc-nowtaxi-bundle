@@ -23,7 +23,7 @@ abstract class AbstractOrderConverter implements OrderConverterInterface
      */
     public static function arrayRemoveEmptyValues($array)
     {
-        $result = [];
+        $result = array();
         foreach($array as $val){
             $val = trim($val);
 
