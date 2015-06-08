@@ -19,5 +19,5 @@
   "autoload": {
     "psr-0": { "Htc\\NowTaxiBundle": "" }
   },
-  "target-dir": "Htc/HtcNowTaxiBundle"
+  "target-dir": "Htc/NowTaxiBundle"
 }
