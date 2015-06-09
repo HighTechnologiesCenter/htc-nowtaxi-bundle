@@ -137,10 +137,10 @@ services:
 ### Events, Listeners
 
 There is some events:
- - "htc_now_taxi.order_created" (Htc\NowTaxiBundle\Event\OrderEvent) - fires when order creation request was sent into the nowtaxi service
- - "htc_now_taxi.order_changed" (Htc\NowTaxiBundle\Event\OrderEvent) - fires when order status was changed by the nowtaxi service
- - "htc_now_taxi.order_cancelled" (Htc\NowTaxiBundle\Event\OrderEvent) - fires when order was cancelled by the nowtaxi service
- - "htc_now_taxi.drivers_position_changed" (Htc\NowTaxiBundle\Event\DriversPositionEvent) - fires when drivers position was changed
+ - `htc_now_taxi.order_created` (Htc\NowTaxiBundle\Event\OrderEvent) - fires when order creation request was sent into the nowtaxi service
+ - `htc_now_taxi.order_changed` (Htc\NowTaxiBundle\Event\OrderEvent) - fires when order status was changed by the nowtaxi service
+ - `htc_now_taxi.order_cancelled` (Htc\NowTaxiBundle\Event\OrderEvent) - fires when order was cancelled by the nowtaxi service
+ - `htc_now_taxi.drivers_position_changed` (Htc\NowTaxiBundle\Event\DriversPositionEvent) - fires when drivers position was changed
   
 If you want to listen it you need to create some listeners as in the example:
 
