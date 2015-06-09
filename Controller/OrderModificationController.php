@@ -2,19 +2,15 @@
 
 namespace Htc\NowTaxiBundle\Controller;
 
-use FOS\RestBundle\View\View;
 use Htc\NowTaxiBundle\Entity\Order;
 use Htc\NowTaxiBundle\Event\DriversPositionEvent;
 use Htc\NowTaxiBundle\Event\Events;
 use Htc\NowTaxiBundle\Event\OrderEvent;
 use JMS\Serializer\SerializerInterface;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Class OrderModificationController
@@ -43,9 +39,38 @@ class OrderModificationController extends Controller
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    private function debug(Request $request)
+    {
+        $logger = $this->getLogger();
+
+        if ($logger instanceof LoggerInterface) {
+            $logger->debug('Raw request content: ' . $request->getContent());
+        }
+    }
+
+    /**
+     * @return LoggerInterface|null
+     */
+    private function getLogger()
+    {
+        return $this->container->get('monolog.logger.htc_now_taxi', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+    }
+
+    /**
+     * @return \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     */
+    private function getEventDispatcherService()
+    {
+        return $this->get('event_dispatcher');
+    }
+
+    /**
      * Изменяет местоположение водителей на заказах
      *
      * @param Request $request
+     *
      * @return View
      */
     public function changeDriversPositionAction(Request $request)
@@ -60,33 +85,5 @@ class OrderModificationController extends Controller
         $this->getEventDispatcherService()->dispatch(Events::DRIVERS_POSITION_CHANGED, new DriversPositionEvent($positions));
 
         return View::create(null, 200);
-    }
-
-    /**
-     * @return \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
-     */
-    private function getEventDispatcherService()
-    {
-        return $this->get('event_dispatcher');
-    }
-
-    /**
-     * @return LoggerInterface|null
-     */
-    private function getLogger()
-    {
-        return $this->container->get('monolog.logger.htc_now_taxi', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    private function debug(Request $request)
-    {
-        $logger = $this->getLogger();
-
-        if ($logger instanceof LoggerInterface){
-            $logger->debug('Raw request content: '.$request->getContent());
-        }
     }
 }
