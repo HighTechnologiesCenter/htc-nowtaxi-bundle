@@ -1,0 +1,32 @@
+imports:
+   - { resource: parameters.yml }
+
+parameters:
+  locale: en
+  secret: ThisTokenIsNotSoSecretChangeIt
+
+framework:
+  test: ~
+  session:
+      storage_id: session.storage.mock_file
+
+  secret: %secret%
+  router: { resource: "%kernel.root_dir%/config/routing.yml" }
+  default_locale: %locale%
+
+# Serialization
+jms_serializer:
+  handlers:
+    datetime:
+      default_timezone: "Europe/Moscow"
+  metadata:
+    auto_detection: true
+
+# NowTaxi configuration
+htc_now_taxi:
+  order_converter:
+    service: htc_now_taxi.order_converter.default
+    throw_exceptions: true
+  api:
+    host: %now_taxi_host%
+    key: %now_taxi_key%

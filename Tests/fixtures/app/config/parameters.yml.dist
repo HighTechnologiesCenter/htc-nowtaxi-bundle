@@ -1,0 +1,3 @@
+parameters:
+    now_taxi_host: http://empty.host
+    now_taxi_key: empty_key

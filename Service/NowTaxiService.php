@@ -272,7 +272,7 @@ class NowTaxiService
     {
         $this->executeCheck(
             function () use ($id, $rating) {
-                if (empty($id) || is_int($rating)) {
+                if (empty($id) || !is_int($rating)) {
                     throw new \InvalidArgumentException('Id and rating are mandatory parameters and can not be empty. Rating must be an integer.');
                 }
             }
