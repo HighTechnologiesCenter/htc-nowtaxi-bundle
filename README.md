@@ -1,6 +1,10 @@
 HtcNowTaxiBundle
 ============
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/b130f090-3e8f-4103-b6c5-bc6aad0da372/big.png)](https://insight.sensiolabs.com/projects/b130f090-3e8f-4103-b6c5-bc6aad0da372)
+
+-------------
+
 This bundle provides integration with nowtaxi.ru order exchange API (http://doc.nowtaxi.ru/api/exchange) in a Symfony 2 application.
 
 Installation
