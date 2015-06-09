@@ -51,19 +51,27 @@ class NowTaxiResponse
     const ERROR_CODE_ORDER_NOT_FOUND = 'ORDER_NOT_FOUND';
     /** Внутренняя ошибка сервера (прочие ошибки) */
     const ERROR_CODE_INTERNAL_ERROR = 'INTERNAL_ERROR';
-
+    /**
+     * @var string
+     */
+    public $status;
+    /**
+     * @var string
+     */
+    public $message;
+    /**
+     * @var Order
+     */
+    public $order;
+    /**
+     * Расширенное описание ошибки: ERROR_CODE_*
+     * @var string
+     */
+    public $code;
     /**
      * @var string|mixed
      */
     private $rawResponse;
-
-    /**
-     * @param $rawResponse
-     */
-    public function setRawResponse($rawResponse)
-    {
-        $this->rawResponse = $rawResponse;
-    }
 
     /**
      * @return mixed|string
@@ -74,23 +82,10 @@ class NowTaxiResponse
     }
 
     /**
-     * @var string
+     * @param $rawResponse
      */
-    public $status;
-
-    /**
-     * @var string
-     */
-    public $message;
-
-    /**
-     * @var Order
-     */
-    public $order;
-
-    /**
-     * Расширенное описание ошибки: ERROR_CODE_*
-     * @var string
-     */
-    public $code;
+    public function setRawResponse($rawResponse)
+    {
+        $this->rawResponse = $rawResponse;
+    }
 }

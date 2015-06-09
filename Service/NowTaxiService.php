@@ -128,6 +128,113 @@ class NowTaxiService
     }
 
     /**
+     * @param $path
+     *
+     * @return string
+     */
+    private function buildUrl($path)
+    {
+        return $this->getApiBasePath() . $path;
+    }
+
+    /**
+     * @return string
+     */
+    private function getApiBasePath()
+    {
+        return $this->apiHost . '/api/' . $this->apiKey;
+    }
+
+    /**
+     * Выполняет отправку запроса
+     *
+     * @param Request $request
+     *
+     * @return \Httpful\Response|null
+     * @throws ApiConnectionException
+     */
+    private function sendRequest(Request $request)
+    {
+        $response = null;
+        try {
+            // and finally, fire that thing off!
+            $response = $request->send();
+        } catch (ConnectionErrorException $e) {
+            $this->handleException($e, 'Error while sending request');
+        }
+
+        return $response;
+    }
+
+    /**
+     * Обрабатывает исключение
+     *
+     * @param \Exception $e
+     * @param string     $message
+     *
+     * @throws \Exception
+     */
+    private function handleException(\Exception $e, $message = '')
+    {
+        if ($this->throwExceptions) {
+            throw $e;
+        } else {
+            $this->logException($e, $message);
+        }
+    }
+
+    /**
+     * Logs an exception.
+     *
+     * @param \Exception $e        The original \Exception instance
+     * @param string     $message  The error message to log
+     * @param bool       $original False when the handling of the exception thrown another exception
+     */
+    protected function logException(\Exception $e, $message, $original = true)
+    {
+        $isCritical = !$e instanceof HttpExceptionInterface || $e->getStatusCode() >= 500;
+        $context = array('exception' => $e);
+        if (null !== $this->logger) {
+            if ($isCritical) {
+                $this->logger->critical($message, $context);
+            } else {
+                $this->logger->error($message, $context);
+            }
+        } elseif (!$original || $isCritical) {
+            error_log($message);
+        }
+    }
+
+    /**
+     * Проверяет наличие ошибок
+     *
+     * @param Response $httpfulResponse
+     * @param string   $notFoundInfo
+     *
+     * @throws BadRequestException
+     * @throws AuthenticationException
+     * @throws NotFoundException
+     */
+    private function checkForErrors(Response $httpfulResponse, $notFoundInfo = '')
+    {
+        try {
+            switch ($httpfulResponse->code) {
+                case 400:
+                    throw new BadRequestException($httpfulResponse);
+                    break;
+                case 403:
+                    throw new AuthenticationException('Invalid api key: %s', $this->apiKey);
+                    break;
+                case 404:
+                    throw new NotFoundException($notFoundInfo);
+                    break;
+            }
+        } catch (\Exception $e) {
+            $this->handleException($e, 'Error in response detected!');
+        }
+    }
+
+    /**
      * Создает заказ
      * @link http://doc.nowtaxi.ru/api/exchange#apiapikeyorderput
      *
@@ -174,11 +281,40 @@ class NowTaxiService
     }
 
     /**
+     * @param $url
+     * @param $json
+     *
+     * @return Request
+     */
+    private function createPostJsonRequest($url, $json)
+    {
+        $this->debug('NowTaxi POST request to URL: ' . $url, json_decode($json, true));
+        // Build a POST request...
+        return Request::post($url)
+            // tell it we're sending (Content-Type) JSON...
+            ->sendsJson()
+            // attach a body/payload...
+            ->body($json)
+            ->expectsJson();
+    }
+
+    /**
+     * @param       $message
+     * @param array $context
+     */
+    private function debug($message, array $context = array())
+    {
+        if (null !== $this->logger) {
+            $this->logger->debug($message, $context);
+        }
+    }
+
+    /**
      * Отменяет заказ
      * @link http://doc.nowtaxi.ru/api/exchange#apiapikeyordercancel
      *
-     * @param string $id
-     * @param string $comment
+     * @param string     $id
+     * @param string     $comment
      * @param null|mixed $eventData
      *
      * @return bool
@@ -214,6 +350,18 @@ class NowTaxiService
         $this->eventDispatcher->dispatch(Events::ORDER_CANCELLED, new OrderEvent($order, $eventData));
 
         return true;
+    }
+
+    /**
+     * @param callable $checkFn
+     */
+    private function executeCheck(\Closure $checkFn)
+    {
+        try {
+            $checkFn();
+        } catch (\Exception $e) {
+            $this->handleException($e);
+        }
     }
 
     /**
@@ -281,7 +429,7 @@ class NowTaxiService
         $data['id'] = $id;
         $data['rating'] = $rating;
 
-        if (is_string($comment)){
+        if (is_string($comment)) {
             $data['comment'] = $comment;
         }
 
@@ -292,152 +440,5 @@ class NowTaxiService
         $this->checkForErrors($httpfulResponse, sprintf('Order not found or order status is not "complete", "cancelled" or "failed". Id: %s', $id));
 
         return true;
-    }
-
-    /**
-     * @return string
-     */
-    private function getApiBasePath()
-    {
-        return $this->apiHost . '/api/' . $this->apiKey;
-    }
-
-    /**
-     * @param $path
-     * @return string
-     */
-    private function buildUrl($path)
-    {
-        return $this->getApiBasePath() . $path;
-    }
-
-    /**
-     * Выполняет отправку запроса
-     *
-     * @param Request $request
-     *
-     * @return \Httpful\Response|null
-     * @throws ApiConnectionException
-     */
-    private function sendRequest(Request $request)
-    {
-        $response = null;
-        try {
-            // and finally, fire that thing off!
-            $response = $request->send();
-        } catch(ConnectionErrorException $e){
-            $this->handleException($e, 'Error while sending request');
-        }
-
-        return $response;
-    }
-
-    /**
-     * Проверяет наличие ошибок
-     *
-     * @param Response $httpfulResponse
-     * @param string   $notFoundInfo
-     *
-     * @throws BadRequestException
-     * @throws AuthenticationException
-     * @throws NotFoundException
-     */
-    private function checkForErrors(Response $httpfulResponse, $notFoundInfo = '')
-    {
-        try {
-            switch ($httpfulResponse->code) {
-                case 400:
-                    throw new BadRequestException($httpfulResponse);
-                    break;
-                case 403:
-                    throw new AuthenticationException('Invalid api key: %s', $this->apiKey);
-                    break;
-                case 404:
-                    throw new NotFoundException($notFoundInfo);
-                    break;
-            }
-        } catch (\Exception $e) {
-            $this->handleException($e, 'Error in response detected!');
-        }
-    }
-
-    /**
-     * @param $url
-     * @param $json
-     *
-     * @return Request
-     */
-    private function createPostJsonRequest($url, $json)
-    {
-        $this->debug('NowTaxi POST request to URL: ' . $url, json_decode($json, true));
-        // Build a POST request...
-        return Request::post($url)
-            // tell it we're sending (Content-Type) JSON...
-            ->sendsJson()
-            // attach a body/payload...
-            ->body($json)
-            ->expectsJson();
-    }
-
-    /**
-     * Logs an exception.
-     *
-     * @param \Exception $e The original \Exception instance
-     * @param string     $message   The error message to log
-     * @param bool       $original  False when the handling of the exception thrown another exception
-     */
-    protected function logException(\Exception $e, $message, $original = true)
-    {
-        $isCritical = !$e instanceof HttpExceptionInterface || $e->getStatusCode() >= 500;
-        $context = array('exception' => $e);
-        if (null !== $this->logger) {
-            if ($isCritical) {
-                $this->logger->critical($message, $context);
-            } else {
-                $this->logger->error($message, $context);
-            }
-        } elseif (!$original || $isCritical) {
-            error_log($message);
-        }
-    }
-
-    /**
-     * Обрабатывает исключение
-     *
-     * @param \Exception $e
-     * @param string     $message
-     *
-     * @throws \Exception
-     */
-    private function handleException(\Exception $e, $message = '')
-    {
-        if ($this->throwExceptions) {
-            throw $e;
-        } else {
-            $this->logException($e, $message);
-        }
-    }
-
-    /**
-     * @param callable $checkFn
-     */
-    private function executeCheck(\Closure $checkFn)
-    {
-        try{
-            $checkFn();
-        }catch(\Exception $e){
-            $this->handleException($e);
-        }
-    }
-
-    /**
-     * @param       $message
-     * @param array $context
-     */
-    private function debug($message, array $context = array())
-    {
-        if (null !== $this->logger) {
-            $this->logger->debug($message, $context);
-        }
     }
 }

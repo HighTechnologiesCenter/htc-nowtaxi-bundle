@@ -18,6 +18,16 @@ abstract class AbstractOrderConverter implements OrderConverterInterface
     const DATE_TIME_STRING_FORMAT = 'Y-m-d H:i:s O';
 
     /**
+     * @param array $addressParts
+     * @return string
+     */
+    public static function makeAddressStringFromParts(array $addressParts)
+    {
+        $addressParts = self::arrayRemoveEmptyValues($addressParts);
+        return join(', ', $addressParts);
+    }
+
+    /**
      * @param $array
      * @return array
      */
@@ -34,16 +44,6 @@ abstract class AbstractOrderConverter implements OrderConverterInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param array $addressParts
-     * @return string
-     */
-    public static function makeAddressStringFromParts(array $addressParts)
-    {
-        $addressParts = self::arrayRemoveEmptyValues($addressParts);
-        return join(', ', $addressParts);
     }
 
     /**
