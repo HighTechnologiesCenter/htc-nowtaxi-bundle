@@ -19,16 +19,10 @@ use Httpful\Response;
 class BadRequestException extends NowTaxiRuntimeException
 {
     /**
-     * @var \Httpful\Response
-     */
-    private $response;
-
-    /**
      * @param Response $response
      */
     public function __construct(Response $response)
     {
-        $this->response = $response;
         parent::__construct(sprintf('Bad api request. Code: "%s", body: %s', $response->code, $response->raw_body));
     }
 }
