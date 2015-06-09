@@ -80,7 +80,7 @@ class OrderModificationController extends Controller
         $positions = json_decode($request->getContent(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return View::create(null, 400);
+            return new Response('', 400);
         }
 
         $this->getEventDispatcherService()->dispatch(Events::DRIVERS_POSITION_CHANGED, new DriversPositionEvent($positions));
