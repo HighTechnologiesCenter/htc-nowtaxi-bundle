@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class OrderModificationController
@@ -23,7 +24,7 @@ class OrderModificationController extends Controller
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \FOS\RestBundle\View\View
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function changeOrderStatusAction(Request $request)
     {
@@ -35,7 +36,7 @@ class OrderModificationController extends Controller
 
         $this->getEventDispatcherService()->dispatch(Events::ORDER_CHANGED, new OrderEvent($order));
 
-        return View::create(null, 200);
+        return new Response();
     }
 
     /**
@@ -71,7 +72,7 @@ class OrderModificationController extends Controller
      *
      * @param Request $request
      *
-     * @return View
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function changeDriversPositionAction(Request $request)
     {
@@ -84,6 +85,6 @@ class OrderModificationController extends Controller
 
         $this->getEventDispatcherService()->dispatch(Events::DRIVERS_POSITION_CHANGED, new DriversPositionEvent($positions));
 
-        return View::create(null, 200);
+        return new Response();
     }
 }
